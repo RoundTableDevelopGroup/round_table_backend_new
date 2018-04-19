@@ -1,4 +1,6 @@
 from main.models import User
+from django.shortcuts import HttpResponse
+import json
 import time
 import hashlib
 
@@ -32,3 +34,14 @@ class KnightId:
                 knight_id += cls.__vertex[tmp % 36]
                 tmp = 0
         return knight_id
+
+
+def get_login_state(request):
+    if request.session.get('login_state'):
+        return HttpResponse(json.dumps({
+            'success': True
+        }))
+    else:
+        return HttpResponse(json.dumps({
+            'success': False
+        }))
