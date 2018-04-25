@@ -55,8 +55,20 @@ def register(request):
     salt = request.POST.get('salt')
     # 参数校验
     if (username and password and salt):
-        # TODO
-        pass
+        # 将数据存入数据库
+        user = User(
+            username=username,
+            password=password,
+            salt=salt,
+            knight_id=KnightId.generate(username),
+        )
+        user.save()
+
+        # 在session中储存用户信息
+        request.session['login_state'] = True
+        request.session['user_info'] = {
+            id: user.id
+        }
     else:
         return HttpResponse(json.dumps({
             'success': False,
