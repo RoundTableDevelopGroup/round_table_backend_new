@@ -45,3 +45,5 @@ def get_login_state(request):
         return HttpResponse(json.dumps({
             'success': False
         }))
+
+
