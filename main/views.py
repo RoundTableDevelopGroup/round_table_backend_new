@@ -11,3 +11,4 @@ def channel__get_hot_channel(request):
 
 def user__get_login_state(request):
     return user.get_login_state(request)
+

@@ -37,6 +37,7 @@ class KnightId:
 
 
 def get_login_state(request):
+    # 从session获取内容
     if request.session.get('login_state'):
         return HttpResponse(json.dumps({
             'success': True
@@ -47,3 +48,17 @@ def get_login_state(request):
         }))
 
 
+def register(request):
+    # 获取参数
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    salt = request.POST.get('salt')
+    # 参数校验
+    if (username and password and salt):
+        # TODO
+        pass
+    else:
+        return HttpResponse(json.dumps({
+            'success': False,
+            'error_code': 0
+        }))
