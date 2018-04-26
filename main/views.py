@@ -12,3 +12,8 @@ def channel__get_hot_channel(request):
 def user__get_login_state(request):
     return user.get_login_state(request)
 
+def user__register(request):
+    return user.register(request)
+
+def user__logout(request):
+    return user.logout(request)

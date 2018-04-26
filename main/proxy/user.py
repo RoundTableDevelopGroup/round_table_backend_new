@@ -49,28 +49,62 @@ def get_login_state(request):
 
 
 def register(request):
+    """
+    注册
+    :type: post json
+    :error 100: 参数校验失败
+    :error 200: 用户名已经存在
+    """
     # 获取参数
-    username = request.POST.get('username')
-    password = request.POST.get('password')
-    salt = request.POST.get('salt')
+    params = json.loads(request.body)
+    username = params.get('username')
+    password = params.get('password')
+    salt = params.get('salt')
+
     # 参数校验
     if (username and password and salt):
-        # 将数据存入数据库
-        user = User(
-            username=username,
-            password=password,
-            salt=salt,
-            knight_id=KnightId.generate(username),
-        )
-        user.save()
-
-        # 在session中储存用户信息
-        request.session['login_state'] = True
-        request.session['user_info'] = {
-            id: user.id
-        }
+        # 先看用户名是否已经存在
+        if (User.objects.filter(username=username).exists()):
+            return HttpResponse(json.dumps({
+                'success': False,
+                'error_code': 200
+            }))
+        # 如果用户名不存在才能注册
+        else:
+            # 生成KnightID并且查重，如果有重复的KnightID则无限重复生成直到没有重复
+            knight_id = KnightId.generate(username)
+            while (User.objects.filter(knight_id=knight_id).exists()):
+                knight_id = KnightId.generate(username)
+            # 创建新用户
+            user = User(
+                username=username,
+                password=password,
+                salt=salt,
+                knight_id=knight_id,
+            )
+            # 将用户存入数据库
+            user.save()
+            # 保存用户的登录信息到session
+            request.session['login_state'] = True
+            request.session['user_info'] = {
+                'id': user.id
+            }
+            # 返回结果
+            return HttpResponse(json.dumps({
+                'success': True
+            }))
     else:
         return HttpResponse(json.dumps({
             'success': False,
-            'error_code': 0
+            'error_code': 100
         }))
+
+
+def logout(request):
+    # 将session重置
+    request.session['login_state'] = False
+    request.session['user_info'] = None
+    # 返回结果
+    return HttpResponse(json.dumps({
+        'success': True
+    }))
