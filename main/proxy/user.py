@@ -49,12 +49,6 @@ def get_login_state(request):
 
 
 def register(request):
-    """
-    注册
-    :type: post json
-    :error 100: 参数校验失败
-    :error 200: 用户名已经存在
-    """
     # 获取参数
     params = json.loads(request.body)
     username = params.get('username')
@@ -108,3 +102,66 @@ def logout(request):
     return HttpResponse(json.dumps({
         'success': True
     }))
+
+
+def get_salt(request):
+    # 获取参数
+    params = json.loads(request.body)
+    username = params.get('username')
+    # 参数校验
+    if username:
+        # 看用户名是否存在
+        if User.objects.filter(username=username).exists():
+            # 获取用户的盐并且返回
+            return HttpResponse(json.dumps({
+                'success': True,
+                'salt': User.objects.get(username=username).salt
+            }))
+        else:
+            return HttpResponse(json.dumps({
+                'success': False,
+                'error_code': 200
+            }))
+    else:
+        return HttpResponse(json.dumps({
+            'success': False,
+            'error_code': 100
+        }))
+
+
+def login(request):
+    # 获取参数
+    params = json.loads(request.body)
+    username = params.get('username')
+    password = params.get('password')
+    # 参数校验
+    if username and password:
+        # 先看用户名是否存在
+        if User.objects.filter(username=username).exists():
+            # 看用户名和密码哈希值是否匹配
+            user = User.objects.get(username=username)
+            if user.password == password:
+                # 在session中保存用户的信息
+                request.session['login_state'] = True
+                request.session['user_info'] = {
+                    'id': user.id
+                }
+
+                return HttpResponse(json.dumps({
+                    'success': True
+                }))
+            else:
+                return HttpResponse(json.dumps({
+                    'success': False,
+                    'error_code': 201
+                }))
+        else:
+            return HttpResponse(json.dumps({
+                'success': False,
+                'error_code': 200
+            }))
+    else:
+        return HttpResponse(json.dumps({
+            'success': False,
+            'error_code': 100
+        }))
