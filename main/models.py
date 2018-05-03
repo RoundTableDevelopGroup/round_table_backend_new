@@ -34,8 +34,8 @@ class User(models.Model):
     knight_id = models.CharField(max_length=8)
     # 管理员
     admin = models.BooleanField(default=False)
-    # 头像
-    avatar = models.CharField(max_length=100, blank=True)
+    # 头像图片 id
+    avatar = models.IntegerField(blank=True)
     # 注册时间
     register_time = models.DateTimeField(auto_now_add=True)
     # 性别
