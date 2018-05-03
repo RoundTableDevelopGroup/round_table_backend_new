@@ -2,6 +2,9 @@ from django.db import models
 
 
 class Channel(models.Model):
+    """
+    频道
+    """
     # 频道名
     name = models.CharField(max_length=40)
     # 是否火
@@ -9,6 +12,9 @@ class Channel(models.Model):
 
 
 class User(models.Model):
+    """
+    用户
+    """
     # 用户名
     username = models.CharField(max_length=20)
     # 昵称
@@ -41,3 +47,61 @@ class User(models.Model):
     wechat = models.CharField(max_length=20, blank=True)
     # steam
     steam = models.CharField(max_length=20, blank=True)
+
+
+class Post(models.Model):
+    """
+    文章
+    """
+    # 标题
+    title = models.CharField(max_length=100)
+    # 作者 id
+    author = models.IntegerField()
+    # 频道 id
+    channel = models.IntegerField()
+    # 发表时间
+    created_time = models.DateTimeField(auto_now_add=True)
+    # 最后修改时间
+    modified_time = models.DateTimeField(auto_now=True)
+    # 文章内容
+    body = models.TextField()
+
+
+class LikeRelation(models.Model):
+    """
+    喜欢关系
+    """
+    # 用户 id
+    user = models.IntegerField()
+    # 文章 id
+    post = models.IntegerField()
+
+
+class Match(models.Model):
+    """
+    赛事
+    """
+    # 名字
+    name = models.CharField(max_length=100)
+    # 所属频道
+    channel = models.IntegerField()
+    # 描述
+    description = models.TextField()
+    # 报名开始日期
+    sign_up_start_time = models.DateTimeField()
+    # 报名结束日期
+    sign_up_end_time = models.DateTimeField()
+    # 比赛开始日期
+    start_time = models.DateTimeField()
+    # 比赛结束日期
+    end_time = models.DateTimeField()
+
+
+class JoinRelation(models.Model):
+    """
+    参与比赛关系
+    """
+    # 选手 id
+    user = models.IntegerField()
+    # 比赛 id
+    match = models.IntegerField()
