@@ -9,5 +9,7 @@ urlpatterns = [
     path('user/register', views.user__register),
     path('user/logout', views.user__logout),
     path('user/get_salt', views.user__get_salt),
-    path('user/login', views.user__login)
+    path('user/login', views.user__login),
+
+    path('file/image_upload', views.file__image_upload)
 ]

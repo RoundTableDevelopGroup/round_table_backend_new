@@ -1,5 +1,6 @@
 from .proxy import channel
 from .proxy import user
+from .proxy import file
 
 
 def channel__get_all_channel(request):
@@ -28,3 +29,7 @@ def user__get_salt(request):
 
 def user__login(request):
     return user.login(request)
+
+
+def file__image_upload(request):
+    return file.image_upload(request)
