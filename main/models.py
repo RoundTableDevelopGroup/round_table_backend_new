@@ -44,8 +44,6 @@ class User(models.Model):
     phone = models.CharField(max_length=20, blank=True)
     # 邮箱
     email = models.CharField(max_length=48, blank=True)
-    # 关注频道
-    channel = models.CharField(max_length=100, blank=True)
     # QQ
     qq = models.CharField(max_length=20, blank=True)
     # 微博
@@ -54,6 +52,16 @@ class User(models.Model):
     wechat = models.CharField(max_length=20, blank=True)
     # steam
     steam = models.CharField(max_length=20, blank=True)
+
+
+class UserAttentionChannel(models.Model):
+    """
+    用户关注频道关系
+    """
+    # 用户
+    user = models.IntegerField()
+    # 频道
+    channel = models.IntegerField()
 
 
 class Post(models.Model):
@@ -74,7 +82,7 @@ class Post(models.Model):
     body = models.TextField()
 
 
-class LikeRelation(models.Model):
+class UserLikePost(models.Model):
     """
     喜欢关系
     """
@@ -104,7 +112,7 @@ class Match(models.Model):
     end_time = models.DateTimeField()
 
 
-class JoinRelation(models.Model):
+class UserJoinMatch(models.Model):
     """
     参与比赛关系
     """
