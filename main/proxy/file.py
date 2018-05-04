@@ -7,7 +7,7 @@ import uuid
 MEDIA_SERVER = 'http://127.0.0.1:8000/media/'
 
 
-class ImageTool:
+class FileTool:
     @staticmethod
     def get_new_random_file_name(file_name):
         find_type = False
@@ -24,7 +24,7 @@ class ImageTool:
 def image_upload(request):
     source = request.FILES.get('image')
     if source:
-        source.name = ImageTool.get_new_random_file_name(source.name)
+        source.name = FileTool.get_new_random_file_name(source.name)
         image = Image(
             img=source
         )
