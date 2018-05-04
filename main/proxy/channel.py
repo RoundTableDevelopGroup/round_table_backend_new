@@ -23,3 +23,30 @@ def get_hot_channel(request):
                 'name': item.name
             })
     return HttpResponse(json.dumps(data))
+
+
+def get_channel_info_by_id(request):
+    # 获取参数
+    params = json.loads(request.body)
+    channel_id = params.get('id')
+    if channel_id:
+        # 查询频道
+        channel = Channel.objects.get(
+            id=channel_id
+        )
+        if channel:
+            return HttpResponse(json.dumps({
+                'success': True,
+                'name': channel.name,
+                'hot': channel.hot
+            }))
+        else:
+            return HttpResponse(json.dumps({
+                'success': False,
+                'error_code': 200
+            }))
+    else:
+        return HttpResponse(json.dumps({
+            'success': False,
+            'error_code': 100
+        }))

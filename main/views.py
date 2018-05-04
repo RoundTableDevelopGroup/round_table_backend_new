@@ -11,6 +11,10 @@ def channel__get_hot_channel(request):
     return channel.get_hot_channel(request)
 
 
+def channel__get_channel_info_by_id(request):
+    return channel.get_channel_info_by_id(request)
+
+
 def user__get_login_state(request):
     return user.get_login_state(request)
 
