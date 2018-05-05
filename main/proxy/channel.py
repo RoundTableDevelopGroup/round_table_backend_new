@@ -38,7 +38,8 @@ def get_channel_info_by_id(request):
             return HttpResponse(json.dumps({
                 'success': True,
                 'name': channel.name,
-                'hot': channel.hot
+                'hot': channel.hot,
+                'picture': channel.picture
             }))
         else:
             return HttpResponse(json.dumps({

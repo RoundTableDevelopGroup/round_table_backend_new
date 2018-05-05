@@ -1,4 +1,4 @@
-from main.models import Image
+from main.models import SiteImage, UserImage
 from django.shortcuts import HttpResponse
 import json
 import uuid
@@ -21,11 +21,30 @@ class FileTool:
             return str(uuid.uuid1())
 
 
-def image_upload(request):
+def site_image_upload(request):
     source = request.FILES.get('image')
     if source:
         source.name = FileTool.get_new_random_file_name(source.name)
-        image = Image(
+        image = SiteImage(
+            img=source
+        )
+        image.save()
+        return HttpResponse(json.dumps({
+            'success': True,
+            'path': MEDIA_SERVER + image.img.url
+        }))
+    else:
+        return HttpResponse(json.dumps({
+            'success': False,
+            'error_code': 100
+        }))
+
+
+def user_image_upload(request):
+    source = request.FILES.get('image')
+    if source:
+        source.name = FileTool.get_new_random_file_name(source.name)
+        image = UserImage(
             img=source
         )
         image.save()

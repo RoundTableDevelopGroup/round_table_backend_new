@@ -12,5 +12,6 @@ urlpatterns = [
     path('user/get_salt', views.user__get_salt),
     path('user/login', views.user__login),
 
-    path('file/image_upload', views.file__image_upload)
+    path('file/site_image_upload', views.file__site_image_upload),
+    path('file/user_image_upload', views.file__user_image_upload)
 ]

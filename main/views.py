@@ -35,5 +35,9 @@ def user__login(request):
     return user.login(request)
 
 
-def file__image_upload(request):
-    return file.image_upload(request)
+def file__site_image_upload(request):
+    return file.site_image_upload(request)
+
+
+def file__user_image_upload(request):
+    return file.user_image_upload(request)

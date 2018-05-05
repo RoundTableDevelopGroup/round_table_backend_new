@@ -1,9 +1,16 @@
 from django.db import models
 
 
-class Image(models.Model):
+class SiteImage(models.Model):
     # 图片
-    img = models.ImageField(upload_to='img')
+    img = models.ImageField(upload_to='img/site')
+    # 创建时间
+    time = models.DateTimeField(auto_now_add=True)
+
+
+class UserImage(models.Model):
+    # 图片
+    img = models.ImageField(upload_to='img/user')
     # 创建时间
     time = models.DateTimeField(auto_now_add=True)
 
@@ -16,6 +23,8 @@ class Channel(models.Model):
     name = models.CharField(max_length=40)
     # 是否火
     hot = models.BooleanField(default=False)
+    # 图片
+    picture = models.IntegerField(default=0)
 
 
 class User(models.Model):
