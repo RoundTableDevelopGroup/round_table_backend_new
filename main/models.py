@@ -15,6 +15,16 @@ class UserImage(models.Model):
     time = models.DateTimeField(auto_now_add=True)
 
 
+class ChannelType(models.Model):
+    """
+    频道类型
+    """
+    # 频道类别名
+    name = models.CharField(max_length=20)
+    # 缩写
+    short = models.CharField(max_length=10)
+
+
 class Channel(models.Model):
     """
     频道
@@ -25,6 +35,10 @@ class Channel(models.Model):
     hot = models.BooleanField(default=False)
     # 图片
     picture = models.IntegerField(default=0)
+    # 描述
+    description = models.CharField(max_length=200)
+    # 类别id
+    type = models.IntegerField()
 
 
 class User(models.Model):

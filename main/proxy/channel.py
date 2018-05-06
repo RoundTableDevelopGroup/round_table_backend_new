@@ -1,4 +1,4 @@
-from main.models import Channel
+from main.models import Channel, SiteImage, ChannelType
 from django.shortcuts import HttpResponse
 import json
 
@@ -35,12 +35,28 @@ def get_channel_info_by_id(request):
             id=channel_id
         )
         if channel:
-            return HttpResponse(json.dumps({
-                'success': True,
-                'name': channel.name,
-                'hot': channel.hot,
-                'picture': channel.picture
-            }))
+            picture = SiteImage.objects.get(id=channel.picture)
+            if picture:
+                type = ChannelType.objects.get(id=channel.type)
+                if type:
+                    return HttpResponse(json.dumps({
+                        'success': True,
+                        'name': channel.name,
+                        'hot': channel.hot,
+                        'picture': picture.img.url,
+                        'description': channel.description,
+                        'type': type.short
+                    }))
+                else:
+                    return HttpResponse(json.dumps({
+                        'success': False,
+                        'error_code': 202
+                    }))
+            else:
+                return HttpResponse(json.dumps({
+                    'success': False,
+                    'error_code': 201
+                }))
         else:
             return HttpResponse(json.dumps({
                 'success': False,
