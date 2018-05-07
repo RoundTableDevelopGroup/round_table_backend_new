@@ -70,6 +70,9 @@ def get_channel_info_by_id(request):
 
 
 def user_attention_channel(request):
+    """
+    关注频道
+    """
     params = json.loads(request.body)
     channel = params.get('channel')
     login_state = request.session.get('login_state')
@@ -82,7 +85,7 @@ def user_attention_channel(request):
             if UserAttentionChannel.objects.filter(
                 user=user,
                 channel=channel
-            ):
+            ).exists():
                 return HttpResponse(json.dumps({
                     'success': False,
                     'error_code': 202
@@ -106,4 +109,83 @@ def user_attention_channel(request):
         return HttpResponse(json.dumps({
             'success': False,
             'error_code': 201
+        }))
+
+
+def user_un_attention_channel(request):
+    """
+    用户取消关注频道
+    """
+    params = json.loads(request.body)
+    channel = params.get('channel')
+    login_state = request.session.get('login_state')
+    if login_state:
+        user = request.session.get('user_info').get('id')
+        # 参数校验
+        if user and channel:
+            # 看用户是否已经关注了该频道
+            if UserAttentionChannel.objects.filter(
+                user=user,
+                channel=channel
+            ).exists():
+                UserAttentionChannel.objects.get(
+                    user=user,
+                    channel=channel
+                ).delete()
+                return HttpResponse(json.dumps({
+                    'success': True
+                }))
+            else:
+                return HttpResponse(json.dumps({
+                    'success': False,
+                    'error_code': 201
+                }))
+        else:
+            return HttpResponse(json.dumps({
+                'success': False,
+                'error_code': 100
+            }))
+    else:
+        return HttpResponse(json.dumps({
+            'success': False,
+            'error_code': 200
+        }))
+
+
+def is_user_attention_the_channel(request):
+    """
+    用户是否关注了特定的频道
+    """
+    # 获取参数
+    params = json.loads(request.body)
+    channel = params.get('channel')
+    # 看用户是否登录
+    login_state = request.session.get('login_state')
+    if login_state:
+        user = request.session.get('user_info').get('id')
+        # 参数校验
+        if user and channel:
+            # 查询数据库
+            if UserAttentionChannel.objects.filter(
+                user=user,
+                channel=channel
+            ).exists():
+                return HttpResponse(json.dumps({
+                    'success': True,
+                    'attention': True
+                }))
+            else:
+                return HttpResponse(json.dumps({
+                    'success': True,
+                    'attention': False
+                }))
+        else:
+            return HttpResponse(json.dumps({
+                'success': False,
+                'error': 100
+            }))
+    else:
+        return HttpResponse(json.dumps({
+            'success': False,
+            'error_code': 200
         }))

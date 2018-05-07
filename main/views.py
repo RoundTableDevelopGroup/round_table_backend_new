@@ -15,6 +15,18 @@ def channel__get_channel_info_by_id(request):
     return channel.get_channel_info_by_id(request)
 
 
+def channel__user_attention_channel(request):
+    return channel.user_attention_channel(request)
+
+
+def channel__user_un_attention_channel(request):
+    return channel.user_un_attention_channel(request)
+
+
+def channel__is_user_attention_the_channel(request):
+    return channel.is_user_attention_the_channel(request)
+
+
 def user__get_login_state(request):
     return user.get_login_state(request)
 

@@ -58,7 +58,7 @@ class User(models.Model):
     # 管理员
     admin = models.BooleanField(default=False)
     # 头像图片 id
-    avatar = models.IntegerField(blank=True)
+    avatar = models.IntegerField(default=0)
     # 注册时间
     register_time = models.DateTimeField(auto_now_add=True)
     # 性别
