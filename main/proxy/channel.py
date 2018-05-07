@@ -1,4 +1,4 @@
-from main.models import Channel, SiteImage, ChannelType
+from main.models import Channel, SiteImage, ChannelType, UserAttentionChannel
 from django.shortcuts import HttpResponse
 import json
 
@@ -66,4 +66,44 @@ def get_channel_info_by_id(request):
         return HttpResponse(json.dumps({
             'success': False,
             'error_code': 100
+        }))
+
+
+def user_attention_channel(request):
+    params = json.loads(request.body)
+    channel = params.get('channel')
+    login_state = request.session.get('login_state')
+    user = None
+    if login_state:
+        user = request.session.get('user_info').get('id')
+        # 参数校验
+        if channel and user:
+            # 先看用户是否已经关注过该频道了
+            if UserAttentionChannel.objects.filter(
+                user=user,
+                channel=channel
+            ):
+                return HttpResponse(json.dumps({
+                    'success': False,
+                    'error_code': 202
+                }))
+            else:
+                # 将关系存入数据库
+                tmp = UserAttentionChannel(
+                    user=user,
+                    channel=channel
+                )
+                tmp.save()
+                return HttpResponse(json.dumps({
+                    'success': True
+                }))
+        else:
+            return HttpResponse(json.dumps({
+                'success': False,
+                'error_code': 100
+            }))
+    else:
+        return HttpResponse(json.dumps({
+            'success': False,
+            'error_code': 201
         }))
