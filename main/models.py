@@ -75,6 +75,8 @@ class User(models.Model):
     wechat = models.CharField(max_length=20, blank=True)
     # steam
     steam = models.CharField(max_length=20, blank=True)
+    # 签名
+    slogan = models.CharField(max_length=50, blank=True)
 
 
 class UserAttentionChannel(models.Model):
