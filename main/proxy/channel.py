@@ -1,4 +1,4 @@
-from main.models import Channel, SiteImage, ChannelType, UserAttentionChannel
+from main.models import Channel, SiteImage, ChannelType, UserAttentionChannel, Post
 from django.shortcuts import HttpResponse
 import json
 
@@ -188,4 +188,73 @@ def is_user_attention_the_channel(request):
         return HttpResponse(json.dumps({
             'success': False,
             'error_code': 200
+        }))
+
+
+def get_channel_attention_num(request):
+    """
+    获取频道关注数
+    """
+    params = json.loads(request.body)
+    channel = params.get('channel')
+    # 参数校验
+    if channel:
+        # 获取数据库中查询关注数量
+        num = UserAttentionChannel.objects.filter(
+            channel=channel
+        ).count()
+        # 看这个关注量处于哪一个数量级
+        if num >= 10000:
+            return HttpResponse(json.dumps({
+                'success': True,
+                'num': str(format(float(num) / float(10000), '.1f') + 'W')
+            }))
+        else:
+            if num >= 1000:
+                return HttpResponse(json.dumps({
+                    'success': True,
+                    'num': str(format(float(num) / float(1000), '.1f') + 'K')
+                }))
+            else:
+                return HttpResponse(json.dumps({
+                    'success': True,
+                    'num': str(num)
+                }))
+    else:
+        return HttpResponse(json.dumps({
+            'success': False,
+            'error_code': 100
+        }))
+
+
+def get_channel_hot_degree(request):
+    params = json.loads(request.body)
+    channel = params.get('channel')
+    # 参数校验
+    if channel:
+        # 查询数据库获取频道热度
+        num = Post.objects.filter(
+            channel=channel
+        ).count()
+        # 根据num的数量级做出不同的响应
+        if num >= 10000:
+            return HttpResponse(json.dumps({
+                'success': True,
+                'num': str(format(float(num) / float(10000), '.1f') + 'W')
+            }))
+        else:
+            if num >= 1000:
+                return HttpResponse(json.dumps({
+                    'success': True,
+                    'num': str(format(float(num) / float(1000), '.1f') + 'K')
+                }))
+            else:
+                return HttpResponse(json.dumps({
+                    'success': True,
+                    'num': str(num)
+                }))
+    else:
+        return HttpResponse(json.dumps({
+            'success': False,
+            'error_code': 100
         }))

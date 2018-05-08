@@ -8,6 +8,8 @@ urlpatterns = [
     path('channel/user_attention_channel', views.channel__user_attention_channel),
     path('channel/user_un_attention_channel', views.channel__user_un_attention_channel),
     path('channel/is_user_attention_the_channel', views.channel__is_user_attention_the_channel),
+    path('channel/get_channel_attention_num', views.channel__get_channel_attention_num),
+    path('channel/get_channel_hot_degree', views.channel__get_channel_hot_degree),
 
     path('user/get_login_state', views.user__get_login_state),
     path('user/register', views.user__register),

@@ -27,6 +27,14 @@ def channel__is_user_attention_the_channel(request):
     return channel.is_user_attention_the_channel(request)
 
 
+def channel__get_channel_attention_num(request):
+    return channel.get_channel_attention_num(request)
+
+
+def channel__get_channel_hot_degree(request):
+    return channel.get_channel_hot_degree(request)
+
+
 def user__get_login_state(request):
     return user.get_login_state(request)
 
