@@ -105,6 +105,36 @@ class Post(models.Model):
     body = models.TextField()
 
 
+class Comment(models.Model):
+    """
+    评论
+    """
+    # 发表者 id
+    author = models.IntegerField()
+    # 所在文章
+    post = models.IntegerField()
+    # 评论内容
+    body = models.TextField()
+    # 评论发表时间
+    created_time = models.DateTimeField(auto_now_add=True)
+
+
+class Reply(models.Model):
+    """
+    回复
+    """
+    # 发表者 id
+    author = models.IntegerField()
+    # 回复者 id
+    receiver = models.IntegerField()
+    # 所属评论 id
+    parent = models.IntegerField()
+    # 回复内容
+    body = models.TextField()
+    # 回复发表时间
+    created_time = models.DateTimeField(auto_now_add=True)
+
+
 class UserLikePost(models.Model):
     """
     喜欢关系

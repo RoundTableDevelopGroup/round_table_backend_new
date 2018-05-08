@@ -1,6 +1,7 @@
 from .proxy import channel
 from .proxy import user
 from .proxy import file
+from .proxy import post
 
 
 def channel__get_all_channel(request):
